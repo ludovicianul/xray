@@ -19,4 +19,4 @@ This will create an executable fatjar in the current directory called `xray.jar`
 # usage
 You can run the application using the following command:
 
-`java -jar xray.jar --log=LOG_EXPORT_NAME --filter="COMMA_SEPARATED_LIST_OF_TEAM_MEMBER_NAMES"
+`java -jar xray.jar --log=LOG_EXPORT_NAME --filter="COMMA_SEPARATED_LIST_OF_TEAM_MEMBER_NAMES"`
