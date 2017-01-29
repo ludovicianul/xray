@@ -21,7 +21,8 @@
 
   `java -jar xray.jar --log=LOG_EXPORT_FILE_NAME --filter="COMMA_SEPARATED_LIST_OF_TEAM_MEMBER_NAMES"`
 
-  xray was build around the concept of a team. This is why it is mandatory to specify a list of commit authors in the `filter` parameter. Of course, the concept of a _team_ can have different meanings depending on what you want to analyse.
+  xray was build around the concept of a _team_. This is why it is mandatory to specify a list of commit authors in the `filter` parameter. Of course, the concept of a _team_ can have different meanings depending on what you want to analyse.
+
 This is an example of a run:
 
 `java -jar xray.jar --log=geolog.log --filter="Jack Doe, John Doe, Madalin Doe"`
