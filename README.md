@@ -54,6 +54,11 @@ A typical output report will look as follows:
 +----------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+------------------+
 
 ```
+Where:
+* _commit age_ is the number of days between today and the first commit date
+* _total commits_ the total number of commits of the author
+* for the rest of the areas, each number represents the total number of files changed within all author's commits for that particular area
+
 
 
 # future plans
