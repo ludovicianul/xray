@@ -82,5 +82,8 @@ An ideal team is one that has a good balance of expertise for all the areas. Eve
 
 ## _more to come_
 
+# I have the reports, now what?
+** xray was not create to compare team members. It is not intended as a way to measure people performance. ** BUT should be a way for team leads to know how to influence the team to become better. What are the missing skills? How you can increase mastery? Recognize people weaknesses and strenghts and so forth. 
+
 # future plans
 My target is to implement most of the _syndromes_ described in the article mentioned above, along with recommendations on how to take actions based on the results.
