@@ -1,8 +1,8 @@
 # xray
   xray is a team profiling tool based on team member's vcs behaviour. Its aim is to provide a technical approach on building better skilled teams. xray will identify certain _syndromes_ the team members may be affected by. You can find brief descriptions of these syndromes in an article I wrote a while back: https://www.todaysoftmag.com/article/2074/hyper-productive-teams
 
-# vcs supported
-  xray currently works only with Git. There are no concrete plans to make it work with other vcs at this stage.
+# supported VCSs
+  xray currently works only with Git. There are no concrete plans to make it work with other VCSs at this stage.
 
 # git export format
   The log input file must be exported in the folowing format:
@@ -59,7 +59,28 @@ Where:
 * _total commits_ the total number of commits of the author
 * for the rest of the areas, each number represents the total number of files changed within all author's commits for that particular area
 
+This will get you a brief idea on how the team members are contributing to each area. And now the _syndromes_. 
 
+## The Runaway Syndrome
+An ideal team is one that has a good balance of expertise for all the areas. Everyone should be confortable doing any task. But this is mostly not the case. This report will highlight areas which the team members are _scared_ by. This is a sample report:
+
+```
++----------------+------------------------------------+
+| Area           | Runaways                           |
++----------------+------------------------------------+
+| scripting      | John Doe (1)                       |
+| unit tests     | John Doe (176)                     |
+| java           | Jack Doe (978)                     |
+| ui             | John Doe (63)                      |
+| jsp            | Jack Doe (27)                      |
+| integ tests    | Jack Doe (2)                       |
+| config         | Jack Doe (96)                      |
+| sql            | Jack Doe (324)                     |
+| merges         | Jack Doe (138)                     |
++----------------+------------------------------------+
+```
+
+## _more to come_
 
 # future plans
 My target is to implement most of the _syndromes_ described in the article mentioned above, along with recommendations on how to take actions based on the results.
