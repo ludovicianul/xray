@@ -11,7 +11,6 @@ import java.util.LongSummaryStatistics;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -19,7 +18,6 @@ import javax.annotation.PostConstruct;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.insidecoding.xray.model.Commit;
@@ -37,9 +35,6 @@ import com.insidecoding.xray.report.RunawayReport;
 public class RunawaySensor implements XRaySensor {
 	private static final Logger LOG = LoggerFactory.getLogger(RunawaySensor.class);
 
-	@Value("${filter:}")
-	private String filter;
-	private Set<String> authors;
 	private Map<String, List<String>> extensionGroups = new HashMap<>();
 
 	@Autowired
@@ -47,18 +42,7 @@ public class RunawaySensor implements XRaySensor {
 
 	@PostConstruct
 	private void init() {
-		this.loadAuthors();
 		this.loadExtensionGroups();
-	}
-
-	private void loadAuthors() {
-		if (filter.isEmpty()) {
-			throw new IllegalArgumentException("You must supply a list of authors");
-		}
-		authors = new TreeSet<String>(
-				Arrays.asList(filter.split(",")).stream().map(item -> item.trim()).collect(Collectors.toList()));
-
-		LOG.info("Filtering for: " + authors);
 	}
 
 	private void loadExtensionGroups() {
@@ -69,12 +53,12 @@ public class RunawaySensor implements XRaySensor {
 			LOG.info("Extension groups: " + extensionGroups);
 		} catch (IOException e) {
 			LOG.warn(
-					"Error reading extensions file. Will only report 'unit tests, intergration tests, commits no and commit age'");
+					"Error reading extensions file. Will only report unit tests, intergration tests, number of commits and commit age'");
 		}
 	}
 
 	@Override
-	public Report analyse(List<Commit> commits) {
+	public Report analyse(List<Commit> commits, Set<String> authors) {
 		Map<String, List<Commit>> commitsByAuthor = commits.stream().filter(c -> authors.contains(c.author()))
 				.collect(Collectors.groupingBy(Commit::author, Collectors.toList()));
 

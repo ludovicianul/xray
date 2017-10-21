@@ -6,7 +6,11 @@ import java.util.Set;
 import com.insidecoding.xray.model.Commit;
 import com.insidecoding.xray.report.Report;
 
-public interface XRaySensor {
+public class ILoveMyJobSensor implements XRaySensor {
 
-	Report analyse(List<Commit> commits, Set<String> authors);
+	@Override
+	public Report analyse(List<Commit> commits, Set<String> authors) {
+		return null;
+	}
+
 }
