@@ -15,10 +15,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.insidecoding.xray.model.Commit;
 import com.insidecoding.xray.model.XRayFile;
@@ -31,9 +28,8 @@ import com.insidecoding.xray.report.RunawayReport;
  * @author ludovicianul
  *
  */
-@Component
-public class RunawaySensor implements XRaySensor {
-	private static final Logger LOG = LoggerFactory.getLogger(RunawaySensor.class);
+
+public class RunawaySensor extends XRayTeamSensor {
 
 	private Map<String, List<String>> extensionGroups = new HashMap<>();
 

@@ -1,11 +1,9 @@
 package com.insidecoding.xray.engine;
 
 import java.io.IOException;
-import java.util.Arrays;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -13,11 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
 import org.springframework.stereotype.Component;
 
 import com.insidecoding.xray.model.Commit;
 import com.insidecoding.xray.report.Report;
-import com.insidecoding.xray.sensor.RunawaySensor;
 
 @Component
 public class XRayEngine {
@@ -27,26 +25,17 @@ public class XRayEngine {
 	private LogParser logParser;
 
 	@Autowired
-	private RunawaySensor runSensor;
+	private AutowireCapableBeanFactory factory;
 
-	@Value("${filter:}")
-	private String filter;
-
-	private Set<String> authors;
+	@Value("${mode:}")
+	private String mode;
 
 	@PostConstruct
-	private void init() {
-		this.loadAuthors();
-	}
-
-	private void loadAuthors() {
-		if (filter.isEmpty()) {
-			throw new IllegalArgumentException("You must supply a list of authors");
+	public void valid() {
+		if (mode.isEmpty()) {
+			LOG.warn("No mode supplied! xray will exit");
+			System.exit(0);
 		}
-		authors = new TreeSet<String>(
-				Arrays.asList(filter.split(",")).stream().map(item -> item.trim()).collect(Collectors.toList()));
-
-		LOG.info("Filtering for: " + authors);
 	}
 
 	/**
@@ -60,16 +49,20 @@ public class XRayEngine {
 			long start = System.currentTimeMillis();
 			LOG.info("Starting...");
 			List<Commit> commits = logParser.parse(logFile);
-			Report runAwayReport = runSensor.analyse(commits, authors);
-			// build sensor chain
-			// run sensor chain
-			// print the reports depending on format
-			LOG.info("Runaway report :: " + runAwayReport.prettyFormat());
-			LOG.info("Runaway recommendations :: " + runAwayReport.recommendations());
-			LOG.info("Done. Finished parsing " + commits.size() + " commits in " + (System.currentTimeMillis() - start)
-					+ " milliseconds. You can check the reports now ::");
+			Mode xrayMode = Mode.fromString(mode);
+			LOG.info("Mode '{}' found!", mode);
+			Report report = factory.createBean(xrayMode.sensor()).analyse(commits);
+
+			String reportContent = report.prettyFormat();
+			LOG.info("Report :: {}", reportContent);
+			LOG.info("\n Saving report to file {}.xray", mode);
+			Files.write(Paths.get(mode + ".xray"), reportContent.getBytes());
+			LOG.info("Recommendations :: {}", report.recommendations());
+			LOG.info(
+					"Done. Finished parsing {} commits in {} milliseconds. You can check the report and recommendations now ::",
+					commits.size(), (System.currentTimeMillis() - start));
 		} catch (IOException e) {
-			LOG.warn("Something went wrong: " + e.getMessage());
+			LOG.warn("Something went wrong: {} ", e.getMessage());
 		}
 	}
 }

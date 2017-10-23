@@ -58,6 +58,31 @@ public class XRayFile {
 	}
 
 	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((fullName == null) ? 0 : fullName.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		XRayFile other = (XRayFile) obj;
+		if (fullName == null) {
+			if (other.fullName != null)
+				return false;
+		} else if (!fullName.equals(other.fullName))
+			return false;
+		return true;
+	}
+
+	@Override
 	public String toString() {
 		return "XRayFile [name=" + fullName + ", extension=" + extension + ", added=" + added + ", removed=" + removed
 				+ "]";
